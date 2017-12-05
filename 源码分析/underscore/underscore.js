@@ -257,17 +257,24 @@
   
       // Return all the elements that pass a truth test.
       // Aliased as `select`.
+      //数组过滤 类似于Array.filter
       _.filter = _.select = function (obj, predicate, context) {
           var results = [];
+          //绑定执行上下文
           predicate = cb(predicate, context);
+          //遍历数组对象
           _.each(obj, function (value, index, list) {
+              //调用传入的方法来过滤
               if (predicate(value, index, list)) results.push(value);
           });
+          //返回过滤后的数组
           return results;
       };
   
       // Return all the elements for which a truth test fails.
+      //filter 的相反的方法 筛选出没通过的数组
       _.reject = function (obj, predicate, context) {
+          //调用filter方法，只是将传入的函数取反
           return _.filter(obj, _.negate(cb(predicate)), context);
       };
   
@@ -890,7 +897,7 @@
               //只要settimeout了timeout就不会为空，就可以判断是否是首次触发
               var callNow = immediate && !timeout;
               if (!timeout) timeout = setTimeout(later, wait);
-              //如果是立即触发，执行func并将this的指向喝对象的参数传进来
+              //如果是立即触发，执行func并将this的指向和对象的参数传进来
               if (callNow) {
                   result = func.apply(context, args);
                   //清空执行上下文，防止再次传入的时候污染变量
@@ -909,6 +916,7 @@
       };
   
       // Returns a negated version of the passed-in predicate.
+      //返回一个函数和传入的函数得到相反的结果 !predicate
       _.negate = function (predicate) {
           return function () {
               return !predicate.apply(this, arguments);
